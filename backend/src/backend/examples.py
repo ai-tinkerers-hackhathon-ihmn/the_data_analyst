@@ -1,0 +1,1 @@
+DEMO_TASK = """Generate a report about the latest trends in the cac 40."""

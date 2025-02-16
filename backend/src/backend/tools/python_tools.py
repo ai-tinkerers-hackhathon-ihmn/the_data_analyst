@@ -11,6 +11,7 @@ AUTHORIZED_IMPORTS = [
     "numpy",
     "sympy",
     "json",
+    "jinja2",
     "bs4",
     "pubchempy",
     "xml",
