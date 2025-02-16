@@ -3,6 +3,9 @@
 AUTHORIZED_IMPORTS = [
     "requests",
     "os",
+    "gradio",
+    "streamlit",
+    #"httpx",
     "pandas",
     "markdownify",
     "numpy",
@@ -20,6 +23,7 @@ AUTHORIZED_IMPORTS = [
     "PIL",
     "chess",
     "PyPDF2",
+    "httpx",
     "pptx",
     "torch",
     "datetime",

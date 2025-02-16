@@ -15,5 +15,6 @@ query_analyzer = CodeAgent(
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
     tools = [],
-    add_base_tools = True
+    add_base_tools = True,
+    max_steps = 12
 )
