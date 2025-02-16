@@ -34,6 +34,5 @@ class GoogleSearch(Tool):
         }
 
         response = requests.request("POST", self.url, headers=self.headers, data=json.dumps(payload))
-        return response.text
-    
+        return response.text  
 google_search = GoogleSearch()

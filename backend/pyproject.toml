@@ -7,5 +7,8 @@ requires-python = ">=3.13"
 dependencies = [
     "anthropic>=0.45.2",
     "litellm>=1.61.6",
-    "smolagents[gardio,gradio]>=1.9.2",
+    "pip>=25.0.1",
+    "plotly>=6.0.0",
+    "smolagents[e2b,gardio,gradio]>=1.9.2",
+    "streamlit>=1.42.0",
 ]
