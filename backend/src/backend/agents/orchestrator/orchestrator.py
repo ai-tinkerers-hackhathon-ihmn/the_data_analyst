@@ -6,7 +6,7 @@ Responsible for coordinating the other agents.
 """
 
 from smolagents import CodeAgent, LiteLLMModel
-
+from backend.tools.python_tools import AUTHORIZED_IMPORTS
 from backend.agents.query_analyzer.query_analyzer import query_analyzer
 from backend.agents.report_generator.report_generator import report_generator
 from backend.agents.orchestrator.system_prompt import SYSTEM_PROMPT
@@ -24,6 +24,7 @@ def build_orchestrator() -> CodeAgent:
     orchestrator = CodeAgent(
         name="orchestrator",
         description="Orchestrates the other agents.",
+        additional_authorized_imports = AUTHORIZED_IMPORTS,     
         model=llm,
         managed_agents=[
             query_analyzer,

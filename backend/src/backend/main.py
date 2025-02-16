@@ -12,14 +12,14 @@ def main()->None:
     """Entry point for the backend."""
     print("Hello, world!")
 
-    # setup()
-    # print(orchestrator.managed_agents["report_generator"].prompt_templates["system_prompt"])
-    # ui = GradioUI(orchestrator)
-    # ui.launch()
+    setup()
+    print(orchestrator.managed_agents["report_generator"].prompt_templates["system_prompt"])
+    ui = GradioUI(orchestrator)
+    ui.launch()
 
-    from backend.examples import DEMO_TASK
-    from backend.agents.report_generator.report_generator import report_generator
-    orchestrator.run(DEMO_TASK)
+    # from backend.examples import DEMO_TASK
+    # from backend.agents.report_generator.report_generator import report_generator
+    # orchestrator.run(DEMO_TASK)
 
 
 

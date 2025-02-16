@@ -2,6 +2,7 @@
 
 from smolagents import CodeAgent, LiteLLMModel
 from backend.tools.python_tools import AUTHORIZED_IMPORTS
+from backend.tools.save_python_file import file_creator
 from backend.agents.report_generator.system_prompt import SYSTEM_PROMPT
 from backend.tools.streamlit_dashboard_generator import setup_default_dashboard, create_dashboard_section
 
@@ -20,7 +21,7 @@ def build_report_generator()->CodeAgent:
         additional_authorized_imports = AUTHORIZED_IMPORTS,
         name="report_generator",
         description="Generates business reports from insights provided by another agent.",
-        tools = [setup_default_dashboard, create_dashboard_section],
+        tools = [setup_default_dashboard, create_dashboard_section, file_creator],
         add_base_tools = True,
         max_steps = 12,
     )
