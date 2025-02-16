@@ -8,7 +8,7 @@ Responsible for coordinating the other agents.
 from smolagents import CodeAgent, LiteLLMModel
 
 from backend.agents.query_analyzer import query_analyzer
-from backend.agents.report_generator import report_generator
+from backend.agents.report_generator.report_generator import report_generator
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
 

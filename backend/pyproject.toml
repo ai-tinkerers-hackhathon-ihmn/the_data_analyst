@@ -7,5 +7,11 @@ requires-python = ">=3.13"
 dependencies = [
     "anthropic>=0.45.2",
     "litellm>=1.61.6",
+    "psycopg2>=2.9.10",
     "smolagents[gardio,gradio]>=1.9.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
 ]

@@ -11,6 +11,7 @@ def main()->None:
     """Entry point for the backend."""
     print("Hello, world!")
     setup()
+    print(orchestrator.managed_agents["report_generator"].prompt_templates["system_prompt"])
     ui = GradioUI(orchestrator)
     ui.launch()
 

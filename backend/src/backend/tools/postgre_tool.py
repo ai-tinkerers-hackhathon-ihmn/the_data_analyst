@@ -29,29 +29,29 @@ class PostgresQueryTool(Tool):
 
     def __init__(self):
         """Initialize the PostgreSQL query tool with connection details from environment variables."""
-        super().__init__()
+    #     super().__init__()
         
-        # Get database connection details from environment variables
-        self.db_config = {
-            "dbname": os.environ.get("POSTGRES_DB", "postgres"),
-            "user": os.environ.get("POSTGRES_USER", "postgres"),
-            "password": os.environ.get("POSTGRES_PASSWORD", "postgres"),
-            "host": os.environ.get("POSTGRES_HOST", "localhost"),
-            "port": os.environ.get("POSTGRES_PORT", "5432")
-        }
+    #     # Get database connection details from environment variables
+    #     self.db_config = {
+    #         "dbname": os.environ.get("POSTGRES_DB", "postgres"),
+    #         "user": os.environ.get("POSTGRES_USER", "postgres"),
+    #         "password": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+    #         "host": os.environ.get("POSTGRES_HOST", "localhost"),
+    #         "port": os.environ.get("POSTGRES_PORT", "5432")
+    #     }
         
-        # Initialize database connection
-        self.conn = self._get_connection()
+    #     # Initialize database connection
+    #     self.conn = self._get_connection()
 
-    def _get_connection(self):
-        """Create and return a database connection."""
-        try:
-            return psycopg2.connect(
-                **self.db_config,
-                cursor_factory=RealDictCursor  # Returns results as dictionaries
-            )
-        except psycopg2.Error as e:
-            raise ConnectionError(f"Failed to connect to database: {str(e)}")
+    # def _get_connection(self):
+    #     """Create and return a database connection."""
+    #     try:
+    #         return psycopg2.connect(
+    #             **self.db_config,
+    #             cursor_factory=RealDictCursor  # Returns results as dictionaries
+    #         )
+    #     except psycopg2.Error as e:
+    #         raise ConnectionError(f"Failed to connect to database: {str(e)}")
 
     def forward(self, query: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
         """
