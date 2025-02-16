@@ -12,6 +12,7 @@ dotenv.load_dotenv()
 
 sys.path.append('../')
 from tools.postgre_tool import PostgresQueryTool
+from tools.mongodb_tool import MongoDBQueryTool
 
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
@@ -26,7 +27,7 @@ llm = LiteLLMModel(
 query_analyzer = CodeAgent(
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
-    tools = [PostgresQueryTool()],
+    tools = [PostgresQueryTool(), MongoDBQueryTool()],
     model=llm,
     add_base_tools = True,
 )
