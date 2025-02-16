@@ -1,6 +1,7 @@
 """`backend.agents.report_generator` module."""
 
 from smolagents import CodeAgent, LiteLLMModel
+from backend.tools.python_tools import AUTHORIZED_IMPORTS
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
 
@@ -11,8 +12,10 @@ llm = LiteLLMModel(
 
 report_generator = CodeAgent(
     model=llm,
+    additional_authorized_imports = AUTHORIZED_IMPORTS,
     name="report_generator",
     description="Generates business reports from insights provided by another agent.",
     tools = [],
-    add_base_tools = True
+    add_base_tools = True,
+    max_steps = 12
 )

@@ -1,19 +1,10 @@
 """`backend.agents.query_analyzer` module."""
 
+import os
 from smolagents import CodeAgent, LiteLLMModel
 
-## import relevant tools
-import sys
-import os
-
-import dotenv
-
-dotenv.load_dotenv()
-
-sys.path.append('../')
-from tools.postgre_tool import PostgresQueryTool
-from tools.mongodb_tool import MongoDBQueryTool
-
+from backend.tools.postgre_tool import PostgresQueryTool
+from backend.tools.mongodb_tool import MongoDBQueryTool
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
 
@@ -28,6 +19,7 @@ query_analyzer = CodeAgent(
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
     tools = [PostgresQueryTool(), MongoDBQueryTool()],
+    max_steps = 12,
     model=llm,
     add_base_tools = True,
 )
