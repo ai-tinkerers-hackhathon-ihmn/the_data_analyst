@@ -25,5 +25,6 @@ orchestrator = CodeAgent(
         report_generator,
     ],
     tools = [],
-    add_base_tools = True
+    add_base_tools = True,
+    max_steps = 12
 )
