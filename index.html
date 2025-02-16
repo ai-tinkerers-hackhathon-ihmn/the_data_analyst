@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@gradio/client@2.2.0/dist/index.js"></script>
+</head>
+<body class="bg-gray-100 h-screen">
+    <div class="container mx-auto max-w-4xl p-4 h-full flex flex-col">
+        <div class="bg-white rounded-lg shadow-lg p-6 flex-grow flex flex-col">
+            <h1 class="text-2xl font-bold mb-4 text-gray-800">Chat Interface</h1>
+            
+            <!-- Chat messages container -->
+            <div id="chat-messages" class="flex-grow overflow-y-auto mb-4 space-y-4">
+                <!-- Messages will be added here dynamically -->
+            </div>
+
+            <!-- Input form -->
+            <form id="chat-form" class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="message-input"
+                    class="flex-grow rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-500"
+                    placeholder="Type your message..."
+                >
+                <button 
+                    type="submit"
+                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let client;
+        let messageHistory = [];
+
+        async function initializeClient() {
+            try {
+                client = await window.GradioClient.connect("http://127.0.0.1:7860/");
+            } catch (error) {
+                console.error("Failed to connect to Gradio server:", error);
+            }
+        }
+
+        function addMessageToUI(content, isUser) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="max-w-[70%] ${isUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} rounded-lg px-4 py-2">
+                    ${content}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            // Add user message to UI
+            addMessageToUI(message, true);
+
+            try {
+                // Log user message
+                await client.predict("/log_user_message", { text_input: message });
+
+                // Add message to history
+                messageHistory.push({
+                    role: "user",
+                    metadata: null,
+                    content: message,
+                    options: null
+                });
+
+                // Get agent response
+                const result = await client.predict("/interact_with_agent", {
+                    messages: messageHistory
+                });
+
+                // Add assistant's response to history
+                messageHistory.push({
+                    role: "assistant",
+                    metadata: null,
+                    content: result.data,
+                    options: null
+                });
+
+                // Add assistant's response to UI
+                addMessageToUI(result.data, false);
+            } catch (error) {
+                console.error("Error sending message:", error);
+                addMessageToUI("Sorry, there was an error processing your message.", false);
+            }
+
+            // Clear input
+            input.value = '';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeClient();
+            document.getElementById('chat-form').addEventListener('submit', handleSubmit);
+        });
+    </script>
+</body>
+</html> 
