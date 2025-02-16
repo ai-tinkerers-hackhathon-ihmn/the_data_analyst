@@ -12,7 +12,7 @@ def main()->None:
     print("Hello, world!")
     setup()
     ui = GradioUI(orchestrator)
-    ui.launch()
+    ui.launch(share=True)
 
 
 
