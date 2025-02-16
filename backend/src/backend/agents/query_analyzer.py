@@ -7,12 +7,20 @@ import sys
 sys.path.append('../')
 from tools.postgre_tool import PostgresQueryTool
 
-model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-latest", 
-                     api_key="YOUR_ANTHROPIC_API_KEY") 
+
+MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
+
+llm = LiteLLMModel(
+    model_id=MODEL_ID,
+)
+
 
 query_analyzer = CodeAgent(
+    model=llm,
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
     tools = [PostgresQueryTool()],
-    model = model
+    model = model,
+  add_base_tools = True
 )
+
