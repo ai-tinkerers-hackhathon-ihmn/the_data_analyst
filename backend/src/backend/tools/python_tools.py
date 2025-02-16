@@ -30,5 +30,6 @@ AUTHORIZED_IMPORTS = [
     "fractions",
     "csv",
     "huggingface_hub",
-    "streamlit"
+    "streamlit",
+    "plotly",
 ]
