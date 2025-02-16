@@ -33,19 +33,24 @@ class MongoDBQueryTool(Tool):
     }
     output_type = "object"
 
-    def __init__(self):
-        """Initialize the MongoDB query tool with connection details from environment variables."""
+    def __init__(self, mongo_uri: str = None, db_name: str = None):
+        """Initialize the MongoDB query tool with connection details.
+        
+        Args:
+            mongo_uri (str, optional): MongoDB connection URI. Defaults to environment variable MONGODB_URI or localhost.
+            db_name (str, optional): Database name. Defaults to environment variable MONGODB_DB or 'default_db'.
+        """
         super().__init__()
         
-        # Get database connection details from environment variables
-        self.mongo_uri = os.environ.get("MONGODB_URI", "mongodb://localhost:27017")
-        self.db_name = os.environ.get("MONGODB_DB", "default_db")
+        # Get database connection details from parameters or environment variables
+        self.mongo_uri = mongo_uri or os.environ.get("MONGODB_URI", "mongodb://localhost:27017")
+        self.db_name = db_name or os.environ.get("MONGODB_DB", "default_db")
         
-        # Initialize database connection
-        self.client = self._get_connection()
-        self.db = self.client[self.db_name]
+        # Initialize as None - will be lazily initialized on first use
+        self.client = None
+        self.db = None
 
-    def _get_connection(self):
+    def _get_connection(self) -> MongoClient:
         """Create and return a MongoDB client connection."""
         try:
             return MongoClient(self.mongo_uri)
@@ -70,8 +75,8 @@ class MongoDBQueryTool(Tool):
                 - error (str): Error message if operation failed
         """
         try:
-            # Ensure connection is active
-            if not self.client:
+            # Initialize connection if not already done
+            if self.client is None:
                 self.client = self._get_connection()
                 self.db = self.client[self.db_name]
             
@@ -168,6 +173,11 @@ class MongoDBQueryTool(Tool):
             Dict containing collection information including indexes and stats
         """
         try:
+            # Initialize connection if not already done
+            if self.client is None:
+                self.client = self._get_connection()
+                self.db = self.client[self.db_name]
+
             collection = self.db[collection_name]
             
             # Get collection stats
@@ -190,3 +200,8 @@ class MongoDBQueryTool(Tool):
                 "indexes": None,
                 "error": str(e)
             }
+
+    def __del__(self):
+        """Cleanup method to close MongoDB connection when object is destroyed."""
+        if self.client is not None:
+            self.client.close()
