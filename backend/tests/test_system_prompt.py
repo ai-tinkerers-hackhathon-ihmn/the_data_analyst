@@ -56,7 +56,7 @@ def test_system_prompt()->None:
 def test_prompt_templates()->None:
     """Checks the prompt templates are correct."""
 
-    print(report_generator.prompt_templates.keys())
+    print(report_generator.prompt_templates["system_prompt"])
     assert False
 
 

@@ -4,7 +4,7 @@ Entry point for the backend.
 """
 
 from smolagents import GradioUI
-from backend.agents.orchestrator import orchestrator
+from backend.agents.orchestrator.orchestrator import orchestrator
 from backend.setup import setup
 from backend.prompt_injection import modify_user_prompt
 
@@ -19,7 +19,7 @@ def main()->None:
 
     from backend.examples import DEMO_TASK
     from backend.agents.report_generator.report_generator import report_generator
-    orchestrator.run(modify_user_prompt(DEMO_TASK))
+    orchestrator.run(DEMO_TASK)
 
 
 

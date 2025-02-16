@@ -5,6 +5,7 @@ AUTHORIZED_IMPORTS = [
     "os",
     "gradio",
     "streamlit",
+    "plotly"
     #"httpx",
     "pandas",
     "markdownify",

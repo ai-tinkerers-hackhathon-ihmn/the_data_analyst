@@ -2,7 +2,11 @@
 
 from typing import Optional
 import streamlit as st
-from smolagents import tool
+from smolagents import tool, Tool
+
+#class SetupDefaultDashboard(Tool):
+
+
 
 @tool
 def setup_default_dashboard(

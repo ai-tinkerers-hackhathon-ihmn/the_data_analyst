@@ -7,13 +7,13 @@ from backend.tools.streamlit_dashboard_generator import setup_default_dashboard,
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
 
-llm = LiteLLMModel(
-    model_id=MODEL_ID,
-)
-
 
 def build_report_generator()->CodeAgent:
     """Builds the report generator agent."""
+
+    llm = LiteLLMModel(
+    model_id=MODEL_ID,
+)
 
     report_generator = CodeAgent(
         model=llm,
