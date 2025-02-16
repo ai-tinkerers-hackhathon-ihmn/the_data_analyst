@@ -1,4 +1,4 @@
-,date,product_id,price,client_id
+id,date,product_id,price,client_id
 0,2024-10-31,1,9422,10
 1,2024-10-12,8,1673,18
 2,2023-03-06,3,9432,12
