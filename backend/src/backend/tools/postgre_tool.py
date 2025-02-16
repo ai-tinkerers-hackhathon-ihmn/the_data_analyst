@@ -19,9 +19,10 @@ class PostgresQueryTool(Tool):
             "description": "The SQL query to execute. For example 'SELECT * FROM users LIMIT 5'"
         },
         "params": {
-            "type": "object",
+            "type": "object", 
             "description": "Optional query parameters for parameterized queries",
-            "required": False
+            "required": False,
+            "nullable": True
         }
     }
     output_type = "object"
@@ -32,18 +33,15 @@ class PostgresQueryTool(Tool):
         
         # Get database connection details from environment variables
         self.db_config = {
-            "dbname": os.environ.get("POSTGRES_DB"),
-            "user": os.environ.get("POSTGRES_USER"),
-            "password": os.environ.get("POSTGRES_PASSWORD"),
-            "host": os.environ.get("POSTGRES_HOST"),
+            "dbname": os.environ.get("POSTGRES_DB", "postgres"),
+            "user": os.environ.get("POSTGRES_USER", "postgres"),
+            "password": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+            "host": os.environ.get("POSTGRES_HOST", "localhost"),
             "port": os.environ.get("POSTGRES_PORT", "5432")
         }
         
-        # Validate required environment variables
-        required_vars = ["POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD"]
-        missing_vars = [var for var in required_vars if not os.environ.get(var)]
-        if missing_vars:
-            raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
+        # Initialize database connection
+        self.conn = self._get_connection()
 
     def _get_connection(self):
         """Create and return a database connection."""
@@ -70,10 +68,12 @@ class PostgresQueryTool(Tool):
                 - affected_rows (int): Number of affected rows (for INSERT/UPDATE/DELETE)
                 - error (str): Error message if query failed
         """
-        conn = None
         try:
-            conn = self._get_connection()
-            cursor = conn.cursor()
+            # Reuse existing connection or create new if closed
+            if self.conn.closed:
+                self.conn = self._get_connection()
+                
+            cursor = self.conn.cursor()
             
             # Execute query with optional parameters
             if params:
@@ -93,7 +93,7 @@ class PostgresQueryTool(Tool):
                 }
             else:
                 # For INSERT/UPDATE/DELETE queries, return affected rows
-                conn.commit()
+                self.conn.commit()
                 return {
                     "success": True,
                     "data": None,
@@ -103,8 +103,7 @@ class PostgresQueryTool(Tool):
                 
         except psycopg2.Error as e:
             # Roll back transaction on error
-            if conn:
-                conn.rollback()
+            self.conn.rollback()
             return {
                 "success": False,
                 "data": None,
@@ -113,8 +112,7 @@ class PostgresQueryTool(Tool):
             }
             
         finally:
-            if conn:
-                conn.close()
+            cursor.close()
 
     def get_table_schema(self, table_name: str) -> Dict[str, Any]:
         """
