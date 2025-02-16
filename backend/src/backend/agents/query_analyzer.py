@@ -1,17 +1,10 @@
 """`backend.agents.query_analyzer` module."""
 
+import os
 from smolagents import CodeAgent, LiteLLMModel
 
-## import relevant tools
-import sys
-import os
 
-import dotenv
-
-dotenv.load_dotenv()
-
-sys.path.append('../')
-from tools.postgre_tool import PostgresQueryTool
+from backend.tools.postgre_tool import PostgresQueryTool
 
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
