@@ -8,9 +8,9 @@ This database is about the following story.
 - client A asks about an information available on the web
 - client A asks about a report on its past sales 
 
-### Level 2
-
-
+### Level 2: mix the information
+- analysis should i buy this house in rural france for 40000? 
+    expected answer: this client doesn't like living in a city that have few inhabitants. Should invest in a city with more people. 
 
 # The different subdatabases
 ## The types of query we will have
