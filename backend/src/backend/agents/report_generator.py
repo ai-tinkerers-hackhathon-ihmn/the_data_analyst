@@ -12,10 +12,10 @@ llm = LiteLLMModel(
 
 report_generator = CodeAgent(
     model=llm,
-    additional_authorized_imports = AUTHORIZED_IMPORTS,
     name="report_generator",
     description="Generates business reports from insights provided by another agent.",
-    tools = [],
-    add_base_tools = True,
-    max_steps = 12
+    tools=[],
+    additional_authorized_imports = AUTHORIZED_IMPORTS,
+    # add_base_tools = True,
+    max_steps =12
 )
