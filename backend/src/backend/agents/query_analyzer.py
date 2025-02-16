@@ -5,6 +5,7 @@ from smolagents import CodeAgent, LiteLLMModel
 
 
 from backend.tools.postgre_tool import PostgresQueryTool
+from backend.tools.mongodb_tool import MongoDBQueryTool
 
 
 MODEL_ID: str = "anthropic/claude-3-5-sonnet-latest"
@@ -20,7 +21,7 @@ query_analyzer = CodeAgent(
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
     max_steps = 12,
-    tools = [PostgresQueryTool()],
+    tools = [PostgresQueryTool(), MongoDBQueryTool()],
     model=llm,
     add_base_tools = True,
 )
