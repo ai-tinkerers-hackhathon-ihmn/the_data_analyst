@@ -26,6 +26,7 @@ llm = LiteLLMModel(
 query_analyzer = CodeAgent(
     name="query_analyzer",
     description="Analyzes user queries and retrieves the necessary data from the database.",
+    max_steps = 12,
     tools = [PostgresQueryTool()],
     model=llm,
     add_base_tools = True,
