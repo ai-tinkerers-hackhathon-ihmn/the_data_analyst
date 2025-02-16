@@ -11,4 +11,5 @@ dependencies = [
     "plotly>=6.0.0",
     "smolagents[e2b,gardio,gradio]>=1.9.2",
     "streamlit>=1.42.0",
+    "pymongo[srv]>=4.11.1",
 ]
